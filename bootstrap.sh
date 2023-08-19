@@ -72,8 +72,8 @@ sudo cp -i /etc/kubernetes/admin.conf ${HOME}/.kube/config
 sudo chown ${USER}:${USER} ${HOME}/.kube/config
 
 # create sa and clusterrolebinding of dashboard to get cluster-admin token
-kubectl apply -f ~/kubeflow_nfs_ubuntu/sa.yaml
-kubectl apply -f ~/kubeflow_nfs_ubuntu/clusterrolebinding.yaml
+kubectl apply -f ~/kubeflow_nfs_containerd_ubuntu2204/sa.yaml
+kubectl apply -f ~/kubeflow_nfs_containerd_ubuntu2204/clusterrolebinding.yaml
 
 # install gpu-operator
 helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
