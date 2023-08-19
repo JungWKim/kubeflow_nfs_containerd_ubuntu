@@ -53,8 +53,8 @@ sed -i "s/helm_enabled: false/helm_enabled: true/g" inventory/mycluster/group_va
 
 # enroll docker account in containerd config file
 echo '[plugins."io.containerd.grpc.v1.cri".registry.configs."registry-1.docker.io".auth]' >> roles/container-engine/containerd/templates/config.toml.j2
-echo "  username = "${DOCKER_ID}"" >> roles/container-engine/containerd/templates/config.toml.j2
-echo "  password = "${DOCKER_PW}"" >> roles/container-engine/containerd/templates/config.toml.j2
+echo "  username = \"${DOCKER_ID}\"" >> roles/container-engine/containerd/templates/config.toml.j2
+echo "  password = \"${DOCKER_PW}\"" >> roles/container-engine/containerd/templates/config.toml.j2
 
 # enable kubectl & kubeadm auto-completion
 echo "source <(kubectl completion bash)" >> ${HOME}/.bashrc
