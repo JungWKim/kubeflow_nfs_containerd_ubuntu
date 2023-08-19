@@ -51,10 +51,10 @@ sed -i'' -r -e "/targetPort: 8443/a\  type: NodePort" roles/kubernetes-apps/ansi
 # enable helm
 sed -i "s/helm_enabled: false/helm_enabled: true/g" inventory/mycluster/group_vars/k8s_cluster/addons.yml
 
-# enroll docker account
-echo '[plugins."io.containerd.grpc.v1.cri".registry.configs."registry-1.docker.io".auth]' >> /etc/containerd/config.toml
-echo "  username = "${DOCKER_ID}"" >> /etc/containerd/config.toml
-echo "  password = "${DOCKER_PW}"" >> /etc/containerd/config.toml
+# enroll docker account in containerd config file
+echo '[plugins."io.containerd.grpc.v1.cri".registry.configs."registry-1.docker.io".auth]' >> roles/container-engine/containerd/templates/config.toml.j2
+echo "  username = "${DOCKER_ID}"" >> roles/container-engine/containerd/templates/config.toml.j2
+echo "  password = "${DOCKER_PW}"" >> roles/container-engine/containerd/templates/config.toml.j2
 
 # enable kubectl & kubeadm auto-completion
 echo "source <(kubectl completion bash)" >> ${HOME}/.bashrc
@@ -65,7 +65,6 @@ source ${HOME}/.bashrc
 
 ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml -K
 sleep 30
-cd ~
 
 # enable kubectl in admin account and root
 mkdir -p ${HOME}/.kube
@@ -75,6 +74,13 @@ sudo chown ${USER}:${USER} ${HOME}/.kube/config
 # create sa and clusterrolebinding of dashboard to get cluster-admin token
 kubectl apply -f ~/kubeflow_nfs_ubuntu/sa.yaml
 kubectl apply -f ~/kubeflow_nfs_ubuntu/clusterrolebinding.yaml
+
+# enroll docker account in containerd config file
+echo '[plugins."io.containerd.grpc.v1.cri".registry.configs."registry-1.docker.io".auth]' >> ~/kubeflow_nfs_containerd_ubuntu2204/config.toml
+echo "  username = "${DOCKER_ID}"" >> ~/kubeflow_nfs_containerd_ubuntu2204/config.toml
+echo "  password = "${DOCKER_PW}"" >> ~/kubeflow_nfs_containerd_ubuntu2204/config.toml
+sudo cp ~/kubeflow_nfs_containerd_ubuntu2204/config.toml /etc/containerd/
+systemctl restart containerd
 
 # install gpu-operator
 helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
