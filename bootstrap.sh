@@ -75,13 +75,6 @@ sudo chown ${USER}:${USER} ${HOME}/.kube/config
 kubectl apply -f ~/kubeflow_nfs_ubuntu/sa.yaml
 kubectl apply -f ~/kubeflow_nfs_ubuntu/clusterrolebinding.yaml
 
-# enroll docker account in containerd config file
-echo '[plugins."io.containerd.grpc.v1.cri".registry.configs."registry-1.docker.io".auth]' >> ~/kubeflow_nfs_containerd_ubuntu2204/config.toml
-echo "  username = "${DOCKER_ID}"" >> ~/kubeflow_nfs_containerd_ubuntu2204/config.toml
-echo "  password = "${DOCKER_PW}"" >> ~/kubeflow_nfs_containerd_ubuntu2204/config.toml
-sudo cp ~/kubeflow_nfs_containerd_ubuntu2204/config.toml /etc/containerd/
-systemctl restart containerd
-
 # install gpu-operator
 helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
   && helm repo update
