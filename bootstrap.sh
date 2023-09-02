@@ -1,8 +1,14 @@
 #!/bin/bash
 
 IP=
-DOCKER_ID=
-DOCKER_PW=
+CURRENT_DIR=$PWD
+
+if [ -e /etc/needrestart/needrestart.conf ] ; then
+	# disable outdated librareis pop up
+	sudo sed -i "s/\#\$nrconf{restart} = 'i'/\$nrconf{restart} = 'a'/g" /etc/needrestart/needrestart.conf
+	# disable kernel upgrade hint pop up
+	sudo sed -i "s/\#\$nrconf{kernelhints} = -1/\$nrconf{kernelhints} = 0/g" /etc/needrestart/needrestart.conf
+fi
 
 # install basic packages
 sudo apt update
@@ -10,8 +16,6 @@ sudo apt install -y python3-pip net-tools nfs-common whois xfsprogs
 
 # basic setup
 sudo sed -i 's/1/0/g' /etc/apt/apt.conf.d/20auto-upgrades
-sudo sed -i "s/\#\$nrconf{restart} = 'i'/\$nrconf{restart} = 'a'/g" /etc/needrestart/needrestart.conf
-sudo sed -i "s/\#\$nrconf{kernelhints} = -1/\$nrconf{kernelhints} = 0/g" /etc/needrestart/needrestart.conf
 
 # disable ufw
 sudo systemctl stop ufw
@@ -51,11 +55,6 @@ sed -i'' -r -e "/targetPort: 8443/a\  type: NodePort" roles/kubernetes-apps/ansi
 # enable helm
 sed -i "s/helm_enabled: false/helm_enabled: true/g" inventory/mycluster/group_vars/k8s_cluster/addons.yml
 
-# enroll docker account in containerd config file
-echo '[plugins."io.containerd.grpc.v1.cri".registry.configs."registry-1.docker.io".auth]' >> roles/container-engine/containerd/templates/config.toml.j2
-echo "  username = \"${DOCKER_ID}\"" >> roles/container-engine/containerd/templates/config.toml.j2
-echo "  password = \"${DOCKER_PW}\"" >> roles/container-engine/containerd/templates/config.toml.j2
-
 # enable kubectl & kubeadm auto-completion
 echo "source <(kubectl completion bash)" >> ${HOME}/.bashrc
 echo "source <(kubeadm completion bash)" >> ${HOME}/.bashrc
@@ -65,6 +64,7 @@ source ${HOME}/.bashrc
 
 ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml -K
 sleep 30
+cd ~
 
 # enable kubectl in admin account and root
 mkdir -p ${HOME}/.kube
@@ -72,8 +72,8 @@ sudo cp -i /etc/kubernetes/admin.conf ${HOME}/.kube/config
 sudo chown ${USER}:${USER} ${HOME}/.kube/config
 
 # create sa and clusterrolebinding of dashboard to get cluster-admin token
-kubectl apply -f ~/kubeflow_nfs_containerd_ubuntu2204/sa.yaml
-kubectl apply -f ~/kubeflow_nfs_containerd_ubuntu2204/clusterrolebinding.yaml
+kubectl apply -f ${CURRENT_DIR}/sa.yaml
+kubectl apply -f ${CURRENT_DIR}/clusterrolebinding.yaml
 
 # install gpu-operator
 helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
