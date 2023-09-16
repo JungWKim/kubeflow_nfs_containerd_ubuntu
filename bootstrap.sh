@@ -52,6 +52,13 @@ cp -rfp inventory/sample inventory/mycluster
 declare -a IPS=(${IP})
 CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 
+# remove aufs-tools in specific yml file (ubuntu 22.04 bug)
+OS_DIST=$(. /etc/os-release;echo $ID$VERSION_ID)
+
+if [ "${OS_DIST}" == "ubuntu22.04" ] ; then
+	sed -i "/aufs-tools/d" roles/kubernetes/preinstall/vars/ubuntu.yml
+fi
+
 # enable dashboard / disable dashboard login / change dashboard service as nodeport
 sed -i "s/# dashboard_enabled: false/dashboard_enabled: true/g" inventory/mycluster/group_vars/k8s_cluster/addons.yml
 sed -i "s/dashboard_skip_login: false/dashboard_skip_login: true/g" roles/kubernetes-apps/ansible/defaults/main.yml
