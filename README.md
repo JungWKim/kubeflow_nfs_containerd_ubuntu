@@ -1,10 +1,10 @@
 # Summary
-### OS : Ubuntu 20.04, 22.04
-### CRI : containerd v1.6.8
-### k8s : 1.24.6 deployed by kubespray release-2.20
+### OS : Ubuntu 20.04
+### CRI : containerd v1.5.8
+### k8s : 1.22.8 deployed by kubespray release-2.18
 ### CNI : calico
-### Kubeflow version : 1.7
-### kustomize version : 5.0.0
+### Kubeflow version : 1.6
+### kustomize version : 3.2.0
 ### storageclass : nfs-provisioner
 ### etc : gpu-operator
 #
