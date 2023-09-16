@@ -3,11 +3,6 @@
 IP=
 CURRENT_DIR=$PWD
 
-if [ -z ${IP} ] ; then
-	logger -s "[Error] IP is not defined."
-	exit 1
-fi
-
 if [ -e /etc/needrestart/needrestart.conf ] ; then
 	# disable outdated librareis pop up
 	sudo sed -i "s/\#\$nrconf{restart} = 'i'/\$nrconf{restart} = 'a'/g" /etc/needrestart/needrestart.conf
