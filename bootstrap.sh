@@ -3,6 +3,11 @@
 IP=
 CURRENT_DIR=$PWD
 
+if [ -z ${IP} ] ; then
+	logger -s "[Error] IP is not defined."
+	exit 1
+fi
+
 if [ -e /etc/needrestart/needrestart.conf ] ; then
 	# disable outdated librareis pop up
 	sudo sed -i "s/\#\$nrconf{restart} = 'i'/\$nrconf{restart} = 'a'/g" /etc/needrestart/needrestart.conf
@@ -35,7 +40,7 @@ ssh-copy-id -i ~/.ssh/id_rsa ${USER}@${IP}
 
 # k8s installation via kubespray
 cd ~
-git clone -b release-2.20 https://github.com/kubernetes-sigs/kubespray.git
+git clone -b release-2.18 https://github.com/kubernetes-sigs/kubespray.git
 cd kubespray
 pip install -r requirements.txt
 
