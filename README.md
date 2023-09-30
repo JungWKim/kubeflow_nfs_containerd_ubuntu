@@ -1,10 +1,10 @@
 # Summary
 ### OS : Ubuntu 20.04
-### CRI : containerd v1.6.8
-### k8s : 1.24.6 deployed by kubespray release-2.20
+### CRI : containerd v1.7.1
+### k8s : 1.26.9 deployed by kubespray release-2.22
 ### CNI : calico
-### Kubeflow version : 1.7
-### kustomize version : 5.0.0
+### Kubeflow version : 1.8
+### kustomize version : 5.0.3
 ### storageclass : nfs-provisioner
 ### etc : gpu-operator
 #
@@ -24,7 +24,7 @@
 #
 # how to delete kubeflow
 ### 1. change directory to manifests
-### 2. kustomize build example | awk '!/well-defined/' | kubectl delete -f -
+### 2. kustomize build example | kubectl delete -f -
 ### 3. delete all namespaces related with kubeflow(kubeflow, kubeflow-user-example-com, knative-serving, knative-eventing, istio-system, cert-manager)
 ### 4. delete all data in nfs server
 #
