@@ -7,7 +7,7 @@ CURRENT_DIR=$PWD
 cd ~
 git clone https://github.com/kubeflow/manifests.git -b v1.8-branch
 
-# enable kubeflow to be accessed through https (2)
+# enable kubeflow to be accessed through http
 sed -i "s/true/false/g" ~/manifests/apps/jupyter/jupyter-web-app/upstream/base/params.env
 sed -i "s/true/false/g" ~/manifests/apps/volumes-web-app/upstream/base/params.env
 sed -i "s/true/false/g" ~/manifests/apps/tensorboard/tensorboards-web-app/upstream/base/params.env
