@@ -28,12 +28,4 @@
 ### 3. delete all namespaces related with kubeflow(kubeflow, kubeflow-user-example-com, knative-serving, knative-eventing, istio-system, cert-manager)
 ### 4. delete all data in nfs server
 #
-# how to connect kubeflow with http
-### 1. comment below parts in setup_kubeflow.sh
-![image](https://github.com/JungWKim/kubeflow_nfs_docker_ubuntu2004/assets/50034678/70055f8b-d63a-4d36-a80b-3872c67a52bc)
-![image](https://github.com/JungWKim/kubeflow_nfs_docker_ubuntu2004/assets/50034678/bda83d0e-5e74-4442-a2b6-d15ce02a18c3)
-### 2. uncomment beflow part in setup_kubeflow.sh
-![image](https://github.com/JungWKim/kubeflow_nfs_docker_ubuntu2004/assets/50034678/22e17942-02ae-444a-8de7-600d3d6c3005)
-
-
 # 이외에도 추가적인 내용은 kubespray_ubuntu 레포지토리 참고할 것
