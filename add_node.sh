@@ -26,6 +26,9 @@ EOF
 
 sudo sysctl --system
 
+sudo sysctl fs.inotify.max_user_instances=1280
+sudo sysctl fs.inotify.max_user_watches=655360
+
 # download nerdctl zip file
 cd ${HOME}
 wget https://github.com/containerd/nerdctl/releases/download/v1.6.2/nerdctl-full-1.6.2-linux-amd64.tar.gz
