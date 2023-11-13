@@ -1,5 +1,5 @@
 # Summary
-### OS : Ubuntu 20.04
+### OS : Ubuntu 20.04, 22.04
 ### CRI : containerd v1.7.1
 ### k8s : 1.26.9 deployed by kubespray release-2.22
 ### CNI : calico
